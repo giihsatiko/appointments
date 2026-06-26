@@ -1,0 +1,107 @@
+import {
+  Injectable,
+  ConflictException,
+  NotFoundException,
+} from '@nestjs/common';
+import { PrismaService } from '../prisma/prisma.service';
+import { CreateAppointmentDto } from './dto/create-appointment.dto';
+import { UpdateAppointmentDto } from './dto/update-appointment.dto';
+import { Prisma } from '@prisma/client';
+
+@Injectable()
+export class AppointmentsService {
+  constructor(private prisma: PrismaService) {}
+
+  async create(createAppointmentDto: CreateAppointmentDto) {
+    const { name, date, location } = createAppointmentDto;
+
+    const existing = await this.prisma.appointment.findFirst({
+      where: {
+        date: new Date(date),
+        location,
+      },
+    });
+
+    if (existing) {
+      throw new ConflictException(
+        'Já existe um agendamento para este horário e local.',
+      );
+    }
+
+    return this.prisma.appointment.create({
+      data: {
+        name,
+        date: new Date(date),
+        location,
+      },
+    });
+  }
+
+  async findAll() {
+    return this.prisma.appointment.findMany({
+      orderBy: { createdAt: 'desc' },
+    });
+  }
+
+  async findOne(id: string) {
+    const appointment = await this.prisma.appointment.findUnique({
+      where: { id },
+    });
+
+    if (!appointment) {
+      throw new NotFoundException('Agendamento não encontrado.');
+    }
+
+    return appointment;
+  }
+
+  async update(id: string, updateAppointmentDto: UpdateAppointmentDto) {
+    const appointment = await this.findOne(id);
+
+    if (updateAppointmentDto.date || updateAppointmentDto.location) {
+      const date = updateAppointmentDto.date
+        ? new Date(updateAppointmentDto.date)
+        : appointment.date;
+      const location = updateAppointmentDto.location || appointment.location;
+
+      const existing = await this.prisma.appointment.findFirst({
+        where: {
+          date,
+          location,
+          id: { not: id },
+        },
+      });
+
+      if (existing) {
+        throw new ConflictException(
+          'Já existe um agendamento para este horário e local.',
+        );
+      }
+    }
+
+    const data: Prisma.AppointmentUpdateInput = { ...updateAppointmentDto };
+    if (updateAppointmentDto.date) {
+      data.date = new Date(updateAppointmentDto.date);
+    }
+
+    return this.prisma.appointment.update({
+      where: { id },
+      data,
+    });
+  }
+
+  async remove(id: string) {
+    await this.findOne(id);
+    return this.prisma.appointment.delete({
+      where: { id },
+    });
+  }
+
+  async checkIn(id: string) {
+    await this.findOne(id);
+    return this.prisma.appointment.update({
+      where: { id },
+      data: { status: 'CHECKED_IN' },
+    });
+  }
+}

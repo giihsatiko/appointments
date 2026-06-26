@@ -4,7 +4,5 @@ import { AppointmentsModule } from './appointments/appointments.module';
 
 @Module({
   imports: [PrismaModule, AppointmentsModule],
-  controllers: [],
-  providers: [],
 })
 export class AppModule {}
