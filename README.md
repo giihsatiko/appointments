@@ -8,7 +8,6 @@ Aplicação web para cadastrar, editar, visualizar e excluir agendamentos. Desen
 
 | Ferramenta | Versão recomendada | Observação |
 |---|---|---|
-| **Git** | qualquer versão recente | Para clonar o repositório |
 | **Node.js** | 20+ | Necessário para frontend e backend |
 | **npm** | 9+ | Incluso com Node.js |
 | **Docker** | versão recente | Necessário para o banco de dados |
@@ -23,7 +22,7 @@ Aplicação web para cadastrar, editar, visualizar e excluir agendamentos. Desen
 ### 1. Clonar o repositório
 
 ```bash
-git clone <https://github.com/giihsatiko/appointments.git>
+git clone https://github.com/giihsatiko/appointments.git
 cd appointment-app
 ```
 
