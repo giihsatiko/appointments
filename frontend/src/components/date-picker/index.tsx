@@ -1,12 +1,26 @@
-import { forwardRef, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import {
+  forwardRef,
+  lazy,
+  Suspense,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react';
 import { createPortal } from 'react-dom';
-import ReactDatePicker from 'react-datepicker';
 import { Calendar as CalendarIcon } from 'lucide-react';
-import { ptBR } from 'date-fns/locale/pt-BR';
 import { cn } from '@/utils/cn';
 import { formatMaskedDate, maskDateInput, parseMaskedDate } from '@/utils/date-input';
+import { CalendarFallback } from './components/calendar-fallback';
 import { datePickerStyles } from './styles';
 import type { DatePickerProps } from './types';
+
+const InlineCalendar = lazy(() =>
+  import('./components/inline-calendar').then((module) => ({
+    default: module.InlineCalendar,
+  })),
+);
 
 const CALENDAR_WIDTH = 280;
 const CALENDAR_HEIGHT = 300;
@@ -50,13 +64,18 @@ function getPortalTarget(anchor: HTMLElement | null): HTMLElement {
 }
 
 export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
-  ({ className, label, error, id, name, selected, onChange, placeholderText, ...props }, ref) => {
+  (
+    { className, label, error, id, name, selected, onChange, placeholderText, required, ...props },
+    ref,
+  ) => {
     const styles = datePickerStyles();
+    
     const inputId = id || name;
     const wrapperRef = useRef<HTMLDivElement>(null);
     const anchorRef = useRef<HTMLDivElement>(null);
     const popoverRef = useRef<HTMLDivElement>(null);
     const isFocusedRef = useRef(false);
+    const positionFrameRef = useRef<number | null>(null);
 
     const [inputText, setInputText] = useState('');
     const [isCalendarOpen, setIsCalendarOpen] = useState(false);
@@ -86,6 +105,17 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
       setPopoverStyle(getPopoverPosition(anchorRef.current, width, height));
     }, []);
 
+    const schedulePositionUpdate = useCallback(() => {
+      if (positionFrameRef.current !== null) {
+        return;
+      }
+
+      positionFrameRef.current = requestAnimationFrame(() => {
+        positionFrameRef.current = null;
+        updatePosition();
+      });
+    }, [updatePosition]);
+
     useLayoutEffect(() => {
       if (!isCalendarOpen || !anchorRef.current) {
         return;
@@ -95,22 +125,26 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
 
       const frame = requestAnimationFrame(updatePosition);
 
-      const resizeObserver = new ResizeObserver(updatePosition);
+      const resizeObserver = new ResizeObserver(schedulePositionUpdate);
       const popover = popoverRef.current;
       if (popover) {
         resizeObserver.observe(popover);
       }
 
-      window.addEventListener('resize', updatePosition);
-      window.addEventListener('scroll', updatePosition, true);
+      window.addEventListener('resize', schedulePositionUpdate);
+      window.addEventListener('scroll', schedulePositionUpdate, true);
 
       return () => {
         cancelAnimationFrame(frame);
+        if (positionFrameRef.current !== null) {
+          cancelAnimationFrame(positionFrameRef.current);
+          positionFrameRef.current = null;
+        }
         resizeObserver.disconnect();
-        window.removeEventListener('resize', updatePosition);
-        window.removeEventListener('scroll', updatePosition, true);
+        window.removeEventListener('resize', schedulePositionUpdate);
+        window.removeEventListener('scroll', schedulePositionUpdate, true);
       };
-    }, [isCalendarOpen, updatePosition]);
+    }, [isCalendarOpen, schedulePositionUpdate, updatePosition]);
 
     useLayoutEffect(() => {
       if (!isCalendarOpen) {
@@ -197,16 +231,9 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
           }}
           onMouseDown={(event) => event.preventDefault()}
         >
-          <ReactDatePicker
-            inline
-            selected={selected}
-            onChange={handleCalendarSelect}
-            locale={ptBR}
-            dateFormat="dd/MM/yyyy"
-            minDate={new Date()}
-            selectsMultiple={false}
-            selectsRange={false}
-          />
+          <Suspense fallback={<CalendarFallback />}>
+            <InlineCalendar selected={selected} onChange={handleCalendarSelect} />
+          </Suspense>
         </div>,
         portalTarget,
       );
@@ -216,6 +243,14 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
         {label && (
           <label htmlFor={inputId} className={styles.label()}>
             {label}
+            {required && (
+              <>
+                <span className={styles.required()} aria-hidden="true">
+                  *
+                </span>
+                <span className="sr-only"> (obrigatório)</span>
+              </>
+            )}
           </label>
         )}
         <div ref={wrapperRef} className={styles.fieldWrapper()}>
@@ -237,7 +272,9 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
               onBlur={handleInputBlur}
               className={cn(styles.field(), error && styles.fieldError(), className)}
               aria-invalid={error ? 'true' : undefined}
+              aria-required={required || undefined}
               aria-describedby={error ? `${inputId}-error` : undefined}
+              required={required}
               {...props}
             />
             <button

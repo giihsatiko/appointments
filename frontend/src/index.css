@@ -1,5 +1,4 @@
 @import 'tailwindcss';
-@import 'react-datepicker/dist/react-datepicker.css';
 
 @theme {
   --color-primary: #2563eb;
@@ -36,50 +35,4 @@
 
 [data-sonner-toaster] {
   z-index: 60;
-}
-
-.datepicker-popper,
-.react-datepicker-popper {
-  z-index: 60;
-}
-
-.react-datepicker__portal {
-  z-index: 60;
-}
-
-.react-datepicker {
-  @apply font-sans;
-}
-
-.date-picker-popover .react-datepicker-wrapper {
-  display: block;
-}
-
-.date-picker-popover .react-datepicker {
-  @apply border-border bg-surface rounded-xl border shadow-lg;
-}
-
-.react-datepicker__header {
-  @apply border-border border-b bg-transparent pt-4 pb-2;
-}
-
-.react-datepicker__current-month {
-  @apply text-ink font-semibold;
-}
-
-.react-datepicker__day-name {
-  @apply text-muted font-medium;
-}
-
-.react-datepicker__day {
-  @apply text-ink hover:bg-bg-subtle rounded-lg transition-colors;
-}
-
-.react-datepicker__day--selected,
-.react-datepicker__day--keyboard-selected {
-  @apply bg-primary hover:bg-primary-hover text-white;
-}
-
-.react-datepicker-popper[data-placement^='bottom'] .react-datepicker__triangle {
-  @apply fill-surface stroke-border;
 }
