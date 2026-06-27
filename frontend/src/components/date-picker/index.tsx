@@ -227,7 +227,6 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
             position: 'fixed',
             top: popoverStyle.top,
             left: popoverStyle.left,
-            zIndex: 20,
           }}
           onMouseDown={(event) => event.preventDefault()}
         >

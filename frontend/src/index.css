@@ -20,6 +20,11 @@
   body {
     @apply bg-bg text-ink antialiased;
   }
+
+  dialog::backdrop {
+    background-color: rgb(0 0 0 / 0.5);
+    backdrop-filter: blur(4px);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

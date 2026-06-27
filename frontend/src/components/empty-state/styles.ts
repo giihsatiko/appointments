@@ -7,5 +7,6 @@ export const emptyStateStyles = tv({
     icon: 'h-6 w-6 text-muted',
     title: 'mb-1 text-lg font-semibold text-ink',
     description: 'mb-4 max-w-sm text-sm text-muted',
+    action: 'mt-1',
   },
 });

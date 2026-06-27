@@ -24,7 +24,7 @@ export function AppointmentDetails({
 
   if (isLoading) {
     return (
-      <Modal isOpen={isOpen} onClose={onClose} title="Detalhes do Agendamento">
+      <Modal isOpen={isOpen} onClose={onClose} title="Detalhes do agendamento">
         <div className={styles.loadingSkeleton()} aria-busy="true" role="status">
           <span className="sr-only">Carregando detalhes do agendamento…</span>
           <Skeleton className="h-64 w-full rounded-xl" aria-hidden="true" />
@@ -53,7 +53,7 @@ export function AppointmentDetails({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title="Detalhes do Agendamento"
+      title="Detalhes do agendamento"
       className="max-w-2xl"
       footer={
         <>
@@ -61,7 +61,7 @@ export function AppointmentDetails({
             Fechar
           </Button>
           {appointment.status === AppointmentStatusEnum.PENDING && (
-            <Button onClick={() => onEdit(viewingId!)}>Editar Agendamento</Button>
+            <Button onClick={() => onEdit(viewingId!)}>Editar agendamento</Button>
           )}
         </>
       }
@@ -69,7 +69,7 @@ export function AppointmentDetails({
       <div className={styles.body()}>
         <div className={styles.content()}>
           <div className={styles.section()}>
-            <p className={styles.label()}>Nome do Paciente / Cliente</p>
+            <p className={styles.label()}>Nome do cliente</p>
             <p className={styles.value()}>{appointment.name}</p>
           </div>
 
@@ -99,7 +99,7 @@ export function AppointmentDetails({
 
         <div className={styles.sidebar()}>
           <div>
-            <p className={styles.statusLabel()}>Status Atual</p>
+            <p className={styles.statusLabel()}>Status atual</p>
             <Badge
               variant={
                 appointment.status === AppointmentStatusEnum.CHECKED_IN ? 'success' : 'warning'

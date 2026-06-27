@@ -49,7 +49,6 @@ export function AppointmentForm({
       reset({ name: '', time: '', location: '' });
     }
   }, [appointment, isEditing, isOpen, reset]);
-
   const handleFormSubmit = (data: AppointmentFormValues) => {
     onSubmit(data);
   };
@@ -58,7 +57,7 @@ export function AppointmentForm({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title={isEditing ? 'Editar Agendamento' : 'Novo Agendamento'}
+      title={isEditing ? 'Editar agendamento' : 'Novo agendamento'}
       className="max-w-md"
       footer={
         <>
@@ -71,7 +70,7 @@ export function AppointmentForm({
             form="appointment-form"
             disabled={isSubmitting || (isEditing && !isDirty)}
           >
-            {isEditing ? 'Salvar Alterações' : 'Criar Agendamento'}
+            {isEditing ? 'Salvar alterações' : 'Criar agendamento'}
           </Button>
         </>
       }
@@ -85,7 +84,7 @@ export function AppointmentForm({
           className={styles.form()}
         >
           <Input
-            label="Nome Completo"
+            label="Nome completo"
             id="name"
             placeholder="Ex: João da Silva"
             required

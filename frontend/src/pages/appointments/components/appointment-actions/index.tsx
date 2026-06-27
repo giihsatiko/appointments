@@ -46,7 +46,7 @@ export function AppointmentActions({
           <Button
             variant="ghost"
             size="icon"
-            aria-label="Fazer check-in"
+            aria-label="Fazer check-in do agendamento"
             className={styles.actionButtonCheckin()}
             onClick={() => onCheckIn(appointmentId)}
             isLoading={isCheckingIn && checkingInId === appointmentId}

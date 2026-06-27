@@ -9,7 +9,7 @@ export const appointmentsStyles = tv({
     subtitle: 'text-muted text-sm',
     headerActions: 'flex items-center gap-2',
     errorCard: 'border-danger/25 bg-danger/5 p-4',
-    errorMessage: 'mb-2 text-sm font-medium text-danger',
+    errorMessage: 'text-sm font-medium text-danger',
     skeletonContainer: 'flex flex-col gap-4',
     skeletonRow: 'h-16 w-full rounded-lg',
   },

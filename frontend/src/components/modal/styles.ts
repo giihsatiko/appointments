@@ -4,7 +4,6 @@ export const modalStyles = tv({
   slots: {
     dialog:
       'fixed inset-0 z-50 m-0 hidden h-full max-h-none w-full max-w-none overflow-hidden border-0 bg-transparent p-4 open:flex open:items-center open:justify-center',
-    backdrop: 'fixed inset-0 bg-black/50 backdrop-blur-sm',
     panel:
       'relative z-10 flex w-full max-w-md flex-col overflow-visible rounded-xl bg-surface shadow-xl',
     header:
