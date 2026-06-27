@@ -65,4 +65,9 @@ export class AppointmentsController {
     this.appointmentsGateway.notifyUpdate(appointment);
     return appointment;
   }
+
+  @Post(':id/poll')
+  poll(@Param('id') id: string) {
+    return this.appointmentsService.poll(id);
+  }
 }

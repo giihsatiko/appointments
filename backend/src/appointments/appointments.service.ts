@@ -9,6 +9,7 @@ import { CreateAppointmentDto } from './dto/create-appointment.dto';
 import { UpdateAppointmentDto } from './dto/update-appointment.dto';
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
 import { createPaginatedResponse } from '../common/interfaces/paginated-response.interface';
+import { AppointmentPollResponse } from '../common/interfaces/appointment-poll-response.interface';
 
 @Injectable()
 export class AppointmentsService {
@@ -115,5 +116,14 @@ export class AppointmentsService {
       where: { id },
       data: { status: AppointmentStatus.CHECKED_IN },
     });
+  }
+
+  async poll(id: string): Promise<AppointmentPollResponse> {
+    const appointment = await this.findOne(id);
+
+    return {
+      serverTime: new Date().toISOString(),
+      appointment,
+    };
   }
 }
