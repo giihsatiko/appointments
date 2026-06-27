@@ -20,7 +20,7 @@ export const appointmentSchema = z
   })
   .superRefine((data, ctx) => {
     const combined = combineDateAndTime(data.date, data.time);
-  
+
     if (combined <= new Date()) {
       ctx.addIssue({
         code: 'custom',
@@ -28,10 +28,10 @@ export const appointmentSchema = z
         path: ['date'],
       });
     }
-  
+
     const maxDate = new Date();
     maxDate.setFullYear(maxDate.getFullYear() + 2);
-  
+
     if (combined > maxDate) {
       ctx.addIssue({
         code: 'custom',
@@ -39,7 +39,7 @@ export const appointmentSchema = z
         path: ['date'],
       });
     }
-  
+
     const hour = Number(
       new Intl.DateTimeFormat('pt-BR', {
         hour: 'numeric',
@@ -47,7 +47,7 @@ export const appointmentSchema = z
         timeZone: 'America/Sao_Paulo',
       }).format(combined),
     );
-  
+
     if (hour < 9 || hour >= 18) {
       ctx.addIssue({
         code: 'custom',

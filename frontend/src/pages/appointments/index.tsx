@@ -61,7 +61,10 @@ export function AppointmentsPage() {
             aria-label="Atualizar appointmentsa de agendamentos"
             aria-busy={appointments.isLoading || undefined}
           >
-            <RefreshCw className={`h-4 w-4 ${appointments.isLoading ? 'animate-spin' : ''}`} aria-hidden="true" />
+            <RefreshCw
+              className={`h-4 w-4 ${appointments.isLoading ? 'animate-spin' : ''}`}
+              aria-hidden="true"
+            />
           </Button>
           <Button onClick={() => openModal('form')}>
             <Plus className="h-4 w-4" /> Novo Agendamento
@@ -72,9 +75,15 @@ export function AppointmentsPage() {
       {appointments.isError && (
         <Card className={styles.errorCard()} role="alert">
           <div className={styles.errorMessage()}>
-            Não foi possível carregar os agendamentos: {appointments.error?.message || 'Erro desconhecido'}
+            Não foi possível carregar os agendamentos:
+            {appointments.error?.message || 'Erro desconhecido'}
           </div>
-          <Button variant="danger" size="sm" className="mt-2" onClick={() => appointments.refetch()}>
+          <Button
+            variant="danger"
+            size="sm"
+            className="mt-2"
+            onClick={() => appointments.refetch()}
+          >
             Tentar Novamente
           </Button>
         </Card>

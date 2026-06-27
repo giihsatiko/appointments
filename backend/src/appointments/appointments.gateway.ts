@@ -31,7 +31,9 @@ export class AppointmentsGateway {
     const room = this.getAppointmentRoom(data.appointmentId);
     await client.join(room);
 
-    const appointment = await this.appointmentsService.findOne(data.appointmentId);
+    const appointment = await this.appointmentsService.findOne(
+      data.appointmentId,
+    );
 
     return {
       serverTime: new Date().toISOString(),
@@ -40,11 +42,11 @@ export class AppointmentsGateway {
   }
 
   @SubscribeMessage('unsubscribeAppointment')
-  handleUnsubscribe(
+  async handleUnsubscribe(
     @ConnectedSocket() client: Socket,
     @MessageBody() data: { appointmentId: string },
   ) {
-    client.leave(this.getAppointmentRoom(data.appointmentId));
+    await client.leave(this.getAppointmentRoom(data.appointmentId));
   }
 
   notifyUpdate(appointment: Appointment | { id: string; deleted: true }) {

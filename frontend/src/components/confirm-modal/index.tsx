@@ -44,11 +44,12 @@ export function ConfirmModal({
       footer={
         <>
           <Button
-           ref={cancelRef}
+            ref={cancelRef}
             type="button"
             variant="ghost"
             onClick={onClose}
-            disabled={isConfirming}>
+            disabled={isConfirming}
+          >
             {cancelLabel}
           </Button>
           <Button
