@@ -2,6 +2,7 @@ import { renderHook, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { AppointmentUpdatedPayload } from '@/api/appointments/types';
 import type { Appointment } from '@/types/appointments';
+import { AppointmentStatus } from '@/types/appointments';
 import { createQueryWrapper, createTestQueryClient } from '@/test/query-wrapper';
 import { useAppointmentSync } from '@/pages/appointments/hooks/use-appointment-sync';
 
@@ -17,7 +18,7 @@ const appointment: Appointment = {
   name: 'Maria',
   date: '2026-06-25T10:00:00.000Z',
   location: 'Sala 2',
-  status: 'PENDING',
+  status: AppointmentStatus.PENDING,
   createdAt: '2026-06-25T09:00:00.000Z',
   updatedAt: '2026-06-25T09:00:00.000Z',
 };
