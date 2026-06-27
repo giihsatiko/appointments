@@ -2,7 +2,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 
 import { formatDate, formatTime } from '@/utils/formatters';
 
-import { AppointmentStatusEnum } from '@/types/appointments';
+import { AppointmentStatus } from '@/types/appointments';
 
 import { Badge } from '@/components/badge';
 
@@ -52,7 +52,7 @@ export function AppointmentsDesktop({
               <TableCell>
                 <Badge
                   variant={
-                    appointment.status === AppointmentStatusEnum.CHECKED_IN ? 'success' : 'warning'
+                    appointment.status === AppointmentStatus.CHECKED_IN ? 'success' : 'warning'
                   }
                 >
                   {formatStatus(appointment.status)}

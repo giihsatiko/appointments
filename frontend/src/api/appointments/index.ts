@@ -1,10 +1,15 @@
 import type { Appointment } from '@/types/appointments';
+import type { PaginatedResponse, PaginationParams } from '@/types/pagination';
 import { api } from '../axios';
 import type { CreateAppointmentInput, UpdateAppointmentInput } from './types';
 
 export const appointmentsApi = {
-  findAll: async (): Promise<Appointment[]> => {
-    const { data } = await api.get<Appointment[]>('/appointments');
+  findAll: async (
+    params: PaginationParams = {},
+  ): Promise<PaginatedResponse<Appointment>> => {
+    const { data } = await api.get<PaginatedResponse<Appointment>>('/appointments', {
+      params,
+    });
     return data;
   },
 

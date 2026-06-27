@@ -7,14 +7,19 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum AppointmentStatus {
+  PENDING
+  CHECKED_IN
+}
+
 model Appointment {
-  id        String   @id @default(uuid())
+  id        String            @id @default(uuid())
   name      String
   date      DateTime
   location  String
-  status    String   @default("PENDING")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  status    AppointmentStatus @default(PENDING)
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
 
   @@unique([date, location])
 }

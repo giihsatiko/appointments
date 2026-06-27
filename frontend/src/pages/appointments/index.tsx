@@ -86,7 +86,7 @@ export function AppointmentsPage() {
             <Skeleton key={i} className={styles.skeletonRow()} aria-hidden="true" />
           ))}
         </div>
-      ) : !appointments.data || appointments.data.length === 0 ? (
+      ) : appointments.total === 0 ? (
         <EmptyState
           icon={Calendar}
           title="Nenhum agendamento encontrado"

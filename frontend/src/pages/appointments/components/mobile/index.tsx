@@ -1,5 +1,5 @@
 import { Calendar, Clock, MapPin } from 'lucide-react';
-import { AppointmentStatusEnum } from '@/types/appointments';
+import { AppointmentStatus } from '@/types/appointments';
 import { AppointmentActions } from '@/pages/appointments/components/appointment-actions';
 import { appointmentsMobileStyles } from './styles';
 import type { AppointmentsMobileProps } from './types';
@@ -29,7 +29,7 @@ export function AppointmentsMobile({
 
             <Badge
               variant={
-                appointment.status === AppointmentStatusEnum.CHECKED_IN ? 'success' : 'warning'
+                appointment.status === AppointmentStatus.CHECKED_IN ? 'success' : 'warning'
               }
             >
               {formatStatus(appointment.status)}

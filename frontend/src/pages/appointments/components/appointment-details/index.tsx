@@ -3,7 +3,7 @@ import { Button } from '@/components/button';
 import { EmptyState } from '@/components/empty-state';
 import { Modal } from '@/components/modal';
 import { formatDate, formatTime, formatDateTime } from '@/utils/formatters';
-import { AppointmentStatusEnum } from '@/types/appointments';
+import { AppointmentStatus } from '@/types/appointments';
 import { Skeleton } from '@/components/skeleton';
 import { Badge } from '@/components/badge';
 import { formatStatus } from '../../utils/format-status';
@@ -60,7 +60,7 @@ export function AppointmentDetails({
           <Button variant="ghost" onClick={onClose}>
             Fechar
           </Button>
-          {appointment.status === AppointmentStatusEnum.PENDING && (
+          {appointment.status === AppointmentStatus.PENDING && (
             <Button onClick={() => onEdit(viewingId!)}>Editar agendamento</Button>
           )}
         </>
@@ -102,7 +102,7 @@ export function AppointmentDetails({
             <p className={styles.statusLabel()}>Status atual</p>
             <Badge
               variant={
-                appointment.status === AppointmentStatusEnum.CHECKED_IN ? 'success' : 'warning'
+                appointment.status === AppointmentStatus.CHECKED_IN ? 'success' : 'warning'
               }
               className={styles.badge()}
             >

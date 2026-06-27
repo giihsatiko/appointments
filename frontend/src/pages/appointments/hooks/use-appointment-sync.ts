@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { subscribeAppointment } from '@/api/appointments/socket';
 import { isDeletedAppointment } from '@/api/appointments/events';
+import { appointmentKeys } from './query-keys';
 
 export function useAppointmentSync(id?: string, enabled = false) {
   const queryClient = useQueryClient();
@@ -9,7 +10,7 @@ export function useAppointmentSync(id?: string, enabled = false) {
   useEffect(() => {
     if (!id || !enabled) return;
 
-    const queryKey = ['appointment', id] as const;
+    const queryKey = appointmentKeys.detail(id);
 
     const unsubscribe = subscribeAppointment(id, (payload) => {
       const appointment = payload.appointment;

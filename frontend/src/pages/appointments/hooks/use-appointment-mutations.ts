@@ -4,6 +4,7 @@ import { toast } from 'sonner';
 import { appointmentsApi } from '@/api/appointments';
 import type { UpdateAppointmentInput } from '@/api/appointments/types';
 import { getApiErrorMessage } from '@/utils/api-error';
+import { appointmentKeys } from './query-keys';
 
 type UpdateParams = {
   id: string;
@@ -16,7 +17,7 @@ export function useAppointmentMutations() {
   const [checkingInId, setCheckingInId] = useState<string | null>(null);
 
   function invalidateList() {
-    return queryClient.invalidateQueries({ queryKey: ['appointments'] });
+    return queryClient.invalidateQueries({ queryKey: appointmentKeys.all });
   }
 
   const create = useMutation({
@@ -34,7 +35,9 @@ export function useAppointmentMutations() {
     mutationFn: ({ id, data }: UpdateParams) => appointmentsApi.update(id, data),
     onSuccess: async (_, variables) => {
       await invalidateList();
-      await queryClient.invalidateQueries({ queryKey: ['appointment', variables.id] });
+      await queryClient.invalidateQueries({
+        queryKey: appointmentKeys.detail(variables.id),
+      });
       toast.success('Agendamento atualizado com sucesso.');
     },
     onError: (error) => {
@@ -66,7 +69,7 @@ export function useAppointmentMutations() {
     },
     onSuccess: async (appointment) => {
       await invalidateList();
-      queryClient.setQueryData(['appointment', appointment.id], appointment);
+      queryClient.setQueryData(appointmentKeys.detail(appointment.id), appointment);
       toast.success('Check-in realizado com sucesso.');
     },
     onError: () => {

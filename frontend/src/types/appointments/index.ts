@@ -1,9 +1,9 @@
-export const AppointmentStatusEnum = {
+export const AppointmentStatus = {
   PENDING: 'PENDING',
   CHECKED_IN: 'CHECKED_IN',
 } as const;
 
-export type AppointmentStatus = 'PENDING' | 'CHECKED_IN';
+export type AppointmentStatus = (typeof AppointmentStatus)[keyof typeof AppointmentStatus];
 
 export interface Appointment {
   id: string;

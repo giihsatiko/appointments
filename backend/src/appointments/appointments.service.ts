@@ -3,10 +3,12 @@ import {
   ConflictException,
   NotFoundException,
 } from '@nestjs/common';
+import { AppointmentStatus, Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateAppointmentDto } from './dto/create-appointment.dto';
 import { UpdateAppointmentDto } from './dto/update-appointment.dto';
-import { Prisma } from '@prisma/client';
+import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
+import { createPaginatedResponse } from '../common/interfaces/paginated-response.interface';
 
 @Injectable()
 export class AppointmentsService {
@@ -37,10 +39,20 @@ export class AppointmentsService {
     });
   }
 
-  async findAll() {
-    return this.prisma.appointment.findMany({
-      orderBy: { createdAt: 'desc' },
-    });
+  async findAll(query: PaginationQueryDto) {
+    const { page, limit } = query;
+    const skip = (page - 1) * limit;
+
+    const [data, total] = await Promise.all([
+      this.prisma.appointment.findMany({
+        skip,
+        take: limit,
+        orderBy: { createdAt: 'desc' },
+      }),
+      this.prisma.appointment.count(),
+    ]);
+
+    return createPaginatedResponse(data, page, limit, total);
   }
 
   async findOne(id: string) {
@@ -101,7 +113,7 @@ export class AppointmentsService {
     await this.findOne(id);
     return this.prisma.appointment.update({
       where: { id },
-      data: { status: 'CHECKED_IN' },
+      data: { status: AppointmentStatus.CHECKED_IN },
     });
   }
 }

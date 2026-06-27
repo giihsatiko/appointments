@@ -1,10 +1,10 @@
-import { AppointmentStatusEnum, type AppointmentStatus } from '@/types/appointments';
+import { AppointmentStatus } from '@/types/appointments';
 
 export function formatStatus(status: AppointmentStatus): string {
   switch (status) {
-    case AppointmentStatusEnum.PENDING:
+    case AppointmentStatus.PENDING:
       return 'Pendente';
-    case AppointmentStatusEnum.CHECKED_IN:
+    case AppointmentStatus.CHECKED_IN:
       return 'Realizado';
     default:
       return status;
