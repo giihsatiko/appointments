@@ -1,4 +1,4 @@
-import type { Appointment } from '@/types/appointment';
+import type { Appointment } from '@/types/appointments';
 import type { AppointmentFormValues } from '@/pages/appointments/components/appointment-form/schemas/appointment';
 
 export interface AppointmentFormProps {

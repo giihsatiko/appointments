@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Eye, Edit2, Trash2, CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/button';
 import { ConfirmModal } from '@/components/confirm-modal';
-import { AppointmentStatusEnum } from '@/types/appointment';
+import { AppointmentStatusEnum } from '@/types/appointments';
 import { appointmentActionsStyles } from './styles';
 import type { AppointmentActionsProps } from './types';
 

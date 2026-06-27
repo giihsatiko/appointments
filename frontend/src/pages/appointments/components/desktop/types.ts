@@ -1,4 +1,4 @@
-import type { Appointment } from '@/types/appointment';
+import type { Appointment } from '@/types/appointments';
 import type { View } from '@/pages/appointments/types';
 
 export interface AppointmentsDesktopProps {
