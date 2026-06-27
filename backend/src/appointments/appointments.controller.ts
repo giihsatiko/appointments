@@ -63,13 +63,4 @@ export class AppointmentsController {
     this.appointmentsGateway.notifyUpdate(appointment);
     return appointment;
   }
-
-  @Post(':id/poll')
-  async poll(@Param('id') id: string) {
-    const appointment = await this.appointmentsService.findOne(id);
-    return {
-      serverTime: new Date().toISOString(),
-      appointment,
-    };
-  }
 }
