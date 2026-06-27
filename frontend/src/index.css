@@ -14,16 +14,12 @@
   --color-danger-hover: #b91c1c;
   --color-success: #059669;
   --color-warning: #d97706;
+  --color-overlay: rgb(0 0 0 / 0.5);
 }
 
 @layer base {
   body {
     @apply bg-bg text-ink antialiased;
-  }
-
-  dialog::backdrop {
-    background-color: rgb(0 0 0 / 0.5);
-    backdrop-filter: blur(4px);
   }
 }
 

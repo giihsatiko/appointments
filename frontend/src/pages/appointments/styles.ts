@@ -7,7 +7,6 @@ export const appointmentsStyles = tv({
     headerContent: 'flex flex-col gap-1',
     title: 'text-2xl font-bold text-ink tracking-tight text-balance',
     subtitle: 'text-muted text-sm',
-    headerActions: 'flex items-center gap-2',
     errorCard: 'border-danger/25 bg-danger/5 p-4',
     errorMessage: 'text-sm font-medium text-danger',
     skeletonContainer: 'flex flex-col gap-4',

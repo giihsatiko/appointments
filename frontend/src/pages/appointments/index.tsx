@@ -1,4 +1,4 @@
-import { Calendar, Plus, RefreshCw } from 'lucide-react';
+import { Calendar, Plus } from 'lucide-react';
 import { lazy, Suspense, useState } from 'react';
 import { Button } from '@/components/button';
 import { Card } from '@/components/card';
@@ -52,24 +52,9 @@ export function AppointmentsPage() {
           <h1 className={styles.title()}>Agendamentos</h1>
           <p className={styles.subtitle()}>Gerencie todos os seus agendamentos.</p>
         </div>
-        <div className={styles.headerActions()}>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => appointments.refetch()}
-            disabled={appointments.isLoading}
-            aria-label="Atualizar lista de agendamentos"
-            aria-busy={appointments.isLoading || undefined}
-          >
-            <RefreshCw
-              className={`h-4 w-4 ${appointments.isLoading ? 'animate-spin' : ''}`}
-              aria-hidden="true"
-            />
-          </Button>
-          <Button onClick={() => openModal('form')}>
-            <Plus className="h-4 w-4" /> Novo agendamento
-          </Button>
-        </div>
+        <Button onClick={() => openModal('form')}>
+          <Plus className="h-4 w-4" /> Novo agendamento
+        </Button>
       </div>
 
       {appointments.isError && (
