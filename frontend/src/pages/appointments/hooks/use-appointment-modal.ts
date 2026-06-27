@@ -4,7 +4,7 @@ import { combineDateAndTime } from '@/utils/datetime';
 import type { View } from '../types';
 import { useAppointment } from './use-appointment';
 import type { AppointmentMutations } from './use-appointment-mutations';
-import { useAppointmentPoll } from './use-appointment-poll';
+import { useAppointmentSync } from './use-appointment-sync';
 
 export function useAppointmentModal(view: View, mutations: AppointmentMutations) {
   const isFormOpen = view?.mode === 'form';
@@ -15,7 +15,9 @@ export function useAppointmentModal(view: View, mutations: AppointmentMutations)
   const { create, update } = mutations;
 
   const editingAppointment = useAppointment(formId, isFormOpen && !!formId);
-  const detailsPoll = useAppointmentPoll(detailId, isDetailOpen);
+  const detailQuery = useAppointment(detailId, isDetailOpen);
+
+  useAppointmentSync(detailId, isDetailOpen);
 
   const submitForm = useCallback(
     (data: AppointmentFormValues, onSuccess: () => void) => {
@@ -41,9 +43,9 @@ export function useAppointmentModal(view: View, mutations: AppointmentMutations)
     },
     detail: {
       viewingId: detailId,
-      appointment: detailsPoll.data?.appointment,
-      isLoading: detailsPoll.isLoading,
-      isError: detailsPoll.isError,
+      appointment: detailQuery.data,
+      isLoading: detailQuery.isLoading,
+      isError: detailQuery.isError,
     },
   };
 }

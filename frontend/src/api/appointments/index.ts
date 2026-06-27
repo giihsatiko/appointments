@@ -1,6 +1,6 @@
 import type { Appointment } from '@/types/appointments';
 import { api } from '../axios';
-import type { CreateAppointmentInput, UpdateAppointmentInput, PollResponse } from './types';
+import type { CreateAppointmentInput, UpdateAppointmentInput } from './types';
 
 export const appointmentsApi = {
   findAll: async (): Promise<Appointment[]> => {
@@ -29,11 +29,6 @@ export const appointmentsApi = {
 
   checkIn: async (id: string): Promise<Appointment> => {
     const { data } = await api.post<Appointment>(`/appointments/${id}/check-in`);
-    return data;
-  },
-
-  poll: async (id: string): Promise<PollResponse> => {
-    const { data } = await api.post<PollResponse>(`/appointments/${id}/poll`);
     return data;
   },
 };

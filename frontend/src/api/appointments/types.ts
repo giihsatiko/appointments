@@ -10,7 +10,7 @@ export interface UpdateAppointmentInput extends Partial<CreateAppointmentInput> 
   status?: AppointmentStatus;
 }
 
-export interface PollResponse {
+export interface AppointmentUpdatedPayload {
   serverTime: string;
-  appointment: Appointment;
+  appointment: Appointment | { id: string; deleted: true };
 }
