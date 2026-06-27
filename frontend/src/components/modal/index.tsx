@@ -20,10 +20,7 @@ export function Modal({
     <Dialog.Root open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <Dialog.Portal>
         <Dialog.Overlay className={styles.overlay()} />
-        <Dialog.Content
-          className={cn(styles.panel(), className)}
-          aria-labelledby={titleId}
-        >
+        <Dialog.Content className={cn(styles.panel(), className)} aria-labelledby={titleId}>
           <div className={styles.header()}>
             <Dialog.Title id={titleId} className={styles.title()}>
               {title}

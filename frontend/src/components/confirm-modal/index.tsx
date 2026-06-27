@@ -1,11 +1,7 @@
 import { useEffect, useRef } from 'react';
-
 import { Modal } from '@/components/modal';
-
 import { Button } from '@/components/button';
-
 import { confirmModalStyles } from './styles';
-
 import type { ConfirmModalProps } from './types';
 
 export function ConfirmModal({
