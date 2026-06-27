@@ -9,8 +9,7 @@ import { AppointmentsDesktop } from './components/desktop';
 import { AppointmentsMobile } from './components/mobile';
 import { appointmentsStyles } from './styles';
 import { useAppointmentsPage } from './hooks/appointments.hook';
-import { useAppointmentFormModal } from './hooks/use-appointment-form-modal';
-import { useAppointmentDetailsModal } from './hooks/use-appointment-details-modal';
+import { useAppointmentModal } from './hooks/use-appointment-modal';
 import type { View } from './types';
 
 const AppointmentDetails = lazy(() =>
@@ -31,8 +30,10 @@ function ModalFallback() {
 
 export function AppointmentsPage() {
   const styles = appointmentsStyles();
-
   const [view, setView] = useState<View>(null);
+
+  const appointments = useAppointmentsPage();
+  const modal = useAppointmentModal(view, appointments);
 
   function openModal(mode: NonNullable<View>['mode'], id?: string) {
     setView({ mode, id } as View);
@@ -43,29 +44,6 @@ export function AppointmentsPage() {
   }
 
   const isOpen = (mode: NonNullable<View>['mode']) => view?.mode === mode;
-
-  const editingId = isOpen('form') ? view?.id : undefined;
-  const viewingId = isOpen('detail') ? view?.id : undefined;
-
-  const {
-    data,
-    isLoading,
-    isError,
-    error,
-    refetch,
-    currentPage,
-    totalPages,
-    onPageChange,
-    remove,
-    isDeleting,
-    deletingId,
-    checkIn,
-    isCheckingIn,
-    checkingInId,
-  } = useAppointmentsPage();
-
-  const form = useAppointmentFormModal(editingId, isOpen('form'));
-  const details = useAppointmentDetailsModal(viewingId, isOpen('detail'));
 
   return (
     <main className={styles.container()}>
@@ -78,11 +56,12 @@ export function AppointmentsPage() {
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => refetch()}
-            disabled={isLoading}
-            aria-label="Atualizar lista de agendamentos"
+            onClick={() => appointments.refetch()}
+            disabled={appointments.isLoading}
+            aria-label="Atualizar appointmentsa de agendamentos"
+            aria-busy={appointments.isLoading || undefined}
           >
-            <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
+            <RefreshCw className={`h-4 w-4 ${appointments.isLoading ? 'animate-spin' : ''}`} aria-hidden="true" />
           </Button>
           <Button onClick={() => openModal('form')}>
             <Plus className="h-4 w-4" /> Novo Agendamento
@@ -90,24 +69,30 @@ export function AppointmentsPage() {
         </div>
       </div>
 
-      {isError && (
-        <Card className={styles.errorCard()}>
+      {appointments.isError && (
+        <Card className={styles.errorCard()} role="alert">
           <div className={styles.errorMessage()}>
-            Erro ao carregar agendamentos: {error?.message || 'Erro desconhecido'}
+            Não foi possível carregar os agendamentos: {appointments.error?.message || 'Erro desconhecido'}
           </div>
-          <Button variant="danger" size="sm" className="mt-2" onClick={() => refetch()}>
+          <Button variant="danger" size="sm" className="mt-2" onClick={() => appointments.refetch()}>
             Tentar Novamente
           </Button>
         </Card>
       )}
 
-      {isLoading ? (
-        <div className={styles.skeletonContainer()}>
+      {appointments.isLoading ? (
+        <div
+          className={styles.skeletonContainer()}
+          aria-busy="true"
+          aria-live="polite"
+          role="status"
+        >
+          <span className="sr-only">Carregando agendamentos…</span>
           {Array.from({ length: 5 }).map((_, i) => (
-            <Skeleton key={i} className={styles.skeletonRow()} />
+            <Skeleton key={i} className={styles.skeletonRow()} aria-hidden="true" />
           ))}
         </div>
-      ) : !data || data.length === 0 ? (
+      ) : !appointments.data || appointments.data.length === 0 ? (
         <EmptyState
           icon={Calendar}
           title="Nenhum agendamento encontrado"
@@ -117,32 +102,32 @@ export function AppointmentsPage() {
       ) : (
         <>
           <AppointmentsDesktop
-            data={data}
+            data={appointments.data}
             onOpenModal={openModal}
-            onCheckIn={checkIn}
-            onRemove={remove}
-            isCheckingIn={isCheckingIn}
-            checkingInId={checkingInId}
-            isDeleting={isDeleting}
-            deletingId={deletingId}
+            onCheckIn={appointments.checkIn}
+            onRemove={appointments.remove}
+            isCheckingIn={appointments.isCheckingIn}
+            checkingInId={appointments.checkingInId}
+            isDeleting={appointments.isDeleting}
+            deletingId={appointments.deletingId}
           />
 
           <AppointmentsMobile
-            data={data}
+            data={appointments.data}
             onOpenModal={openModal}
-            onCheckIn={checkIn}
-            onRemove={remove}
-            isCheckingIn={isCheckingIn}
-            checkingInId={checkingInId}
-            isDeleting={isDeleting}
-            deletingId={deletingId}
+            onCheckIn={appointments.checkIn}
+            onRemove={appointments.remove}
+            isCheckingIn={appointments.isCheckingIn}
+            checkingInId={appointments.checkingInId}
+            isDeleting={appointments.isDeleting}
+            deletingId={appointments.deletingId}
           />
 
-          {totalPages > 1 && (
+          {appointments.totalPages > 1 && (
             <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={onPageChange}
+              currentPage={appointments.currentPage}
+              totalPages={appointments.totalPages}
+              onPageChange={appointments.onPageChange}
             />
           )}
         </>
@@ -152,11 +137,11 @@ export function AppointmentsPage() {
         <AppointmentForm
           isOpen={isOpen('form')}
           onClose={close}
-          editingId={editingId}
-          appointment={form.appointment}
-          isLoadingAppointment={form.isLoadingAppointment}
-          onSubmit={(data) => form.submit(data, close)}
-          isSubmitting={form.isSubmitting}
+          editingId={modal.form.editingId}
+          appointment={modal.form.appointment}
+          isLoadingAppointment={modal.form.isLoadingAppointment}
+          onSubmit={(data) => modal.form.submit(data, close)}
+          isSubmitting={modal.form.isSubmitting}
         />
       </Suspense>
 
@@ -164,10 +149,10 @@ export function AppointmentsPage() {
         <AppointmentDetails
           isOpen={isOpen('detail')}
           onClose={close}
-          viewingId={viewingId}
-          appointment={details.appointment}
-          isLoading={details.isLoading}
-          isError={details.isError}
+          viewingId={modal.detail.viewingId}
+          appointment={modal.detail.appointment}
+          isLoading={modal.detail.isLoading}
+          isError={modal.detail.isError}
           onEdit={(id) => openModal('form', id)}
         />
       </Suspense>

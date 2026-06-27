@@ -1,11 +1,11 @@
-import { useQuery } from '@tanstack/react-query';
-import { appointmentsApi } from '@/api/appointments';
+import { appointmentsApi } from "@/api/appointments";
+import { useQuery } from "@tanstack/react-query";
 
 export function useAppointmentPoll(id?: string, enabled = true) {
-  return useQuery({
-    queryKey: ['appointment', id, 'poll'],
-    queryFn: () => appointmentsApi.poll(id!),
-    enabled: !!id && enabled,
-    refetchInterval: 10000,
-  });
+    return useQuery({
+      queryKey: ['appointment', id],
+      queryFn: () => appointmentsApi.poll(id!),
+      enabled: !!id && enabled,
+      refetchInterval: 10_000,
+    });
 }

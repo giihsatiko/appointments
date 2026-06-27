@@ -20,13 +20,26 @@ export const appointmentSchema = z
   })
   .superRefine((data, ctx) => {
     const combined = combineDateAndTime(data.date, data.time);
+  
     if (combined <= new Date()) {
       ctx.addIssue({
-        code: z.ZodIssueCode.custom,
+        code: 'custom',
         message: 'A data deve ser no futuro',
         path: ['date'],
       });
     }
+  
+    const maxDate = new Date();
+    maxDate.setFullYear(maxDate.getFullYear() + 2);
+  
+    if (combined > maxDate) {
+      ctx.addIssue({
+        code: 'custom',
+        message: 'A data não pode ultrapassar 2 anos',
+        path: ['date'],
+      });
+    }
+  
     const hour = Number(
       new Intl.DateTimeFormat('pt-BR', {
         hour: 'numeric',
@@ -34,9 +47,10 @@ export const appointmentSchema = z
         timeZone: 'America/Sao_Paulo',
       }).format(combined),
     );
+  
     if (hour < 9 || hour >= 18) {
       ctx.addIssue({
-        code: z.ZodIssueCode.custom,
+        code: 'custom',
         message: 'Agendamentos apenas em horário comercial (09h às 18h, horário de Brasília)',
         path: ['time'],
       });

@@ -1,5 +1,5 @@
 import type { Appointment } from '@/types/appointment';
-import type { AppointmentFormValues } from '@/schemas/appointment.schema';
+import type { AppointmentFormValues } from '@/pages/appointments/components/appointment-form/schemas/appointment';
 
 export interface AppointmentFormProps {
   isOpen: boolean;
