@@ -1,10 +1,6 @@
-import { api } from './axios';
-import type {
-  Appointment,
-  CreateAppointmentInput,
-  UpdateAppointmentInput,
-  PollResponse,
-} from '@/types/appointment';
+import type { Appointment } from '@/types/appointments';
+import { api } from '../axios';
+import type { CreateAppointmentInput, UpdateAppointmentInput, PollResponse } from './types';
 
 export const appointmentsApi = {
   findAll: async (): Promise<Appointment[]> => {

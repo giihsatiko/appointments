@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { appointmentsApi } from '@/api/appointments';
-import type { UpdateAppointmentInput } from '@/types/appointment';
+import type { UpdateAppointmentInput } from '@/api/appointments/types';
 import { getApiErrorMessage } from '@/utils/api-error';
 
 type UpdateParams = {

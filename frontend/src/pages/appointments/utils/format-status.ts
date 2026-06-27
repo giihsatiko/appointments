@@ -1,4 +1,4 @@
-import { AppointmentStatusEnum, type AppointmentStatus } from '@/types/appointment';
+import { AppointmentStatusEnum, type AppointmentStatus } from '@/types/appointments';
 
 export function formatStatus(status: AppointmentStatus): string {
   switch (status) {
