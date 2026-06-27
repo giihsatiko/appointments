@@ -21,41 +21,21 @@ export function Modal({
     const dialog = dialogRef.current;
     if (!dialog) return;
 
-    if (isOpen && !dialog.open) {
-      dialog.show();
-    } else if (!isOpen && dialog.open) {
+    if (isOpen) {
+      dialog.showModal();
+    } else if (dialog.open) {
       dialog.close();
     }
   }, [isOpen]);
-
-  useEffect(() => {
-    if (!isOpen) return;
-
-    function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === 'Escape') {
-        onClose();
-      }
-    }
-
-    document.addEventListener('keydown', handleKeyDown);
-
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, onClose]);
-
-  function handleDialogClose() {
-    onClose();
-  }
 
   return (
     <dialog
       ref={dialogRef}
       className={styles.dialog()}
       aria-labelledby={titleId}
-      aria-modal="true"
-      onClose={handleDialogClose}
+      onClose={onClose}
     >
-      <div className={styles.backdrop()} onClick={onClose} aria-hidden="true" />
-      <div className={cn(styles.panel(), className)} onClick={(event) => event.stopPropagation()}>
+      <div className={cn(styles.panel(), className)}>
         <div className={styles.header()}>
           <h2 id={titleId} className={styles.title()}>
             {title}

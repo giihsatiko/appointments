@@ -1,7 +1,10 @@
 import { useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { appointmentSchema, type AppointmentFormValues } from '@/schemas/appointment.schema';
+import {
+  appointmentSchema,
+  type AppointmentFormValues,
+} from '@/pages/appointments/components/appointment-form/schemas/appointment';
 import { Button } from '@/components/button';
 import { Input } from '@/components/input';
 import { Modal } from '@/components/modal';
@@ -85,6 +88,7 @@ export function AppointmentForm({
             label="Nome Completo"
             id="name"
             placeholder="Ex: João da Silva"
+            required
             {...register('name')}
             error={errors.name?.message}
           />
@@ -97,6 +101,7 @@ export function AppointmentForm({
                 <DatePicker
                   label="Data"
                   id="date"
+                  required
                   selected={field.value ?? null}
                   onChange={field.onChange}
                   placeholderText="dd/mm/aaaa"
@@ -112,6 +117,7 @@ export function AppointmentForm({
                 <TimeInput
                   label="Hora"
                   id="time"
+                  required
                   value={field.value}
                   onChange={field.onChange}
                   onBlur={field.onBlur}
@@ -125,6 +131,7 @@ export function AppointmentForm({
             label="Local"
             id="location"
             placeholder="Ex: Consultório 01"
+            required
             {...register('location')}
             error={errors.location?.message}
           />

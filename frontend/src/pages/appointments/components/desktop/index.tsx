@@ -2,7 +2,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 
 import { formatDate, formatTime } from '@/utils/formatters';
 
-import { AppointmentStatusEnum } from '@/types/appointment';
+import { AppointmentStatusEnum } from '@/types/appointments';
 
 import { Badge } from '@/components/badge';
 
@@ -30,11 +30,13 @@ export function AppointmentsDesktop({
   return (
     <div className={styles.root()}>
       <Table>
+        <caption className="sr-only">Lista de agendamentos</caption>
         <TableHeader>
           <TableRow>
             {columns.map((col) => (
               <TableHead
                 key={col}
+                scope="col"
                 className={col === 'Ações' ? styles.tableHeadRight() : undefined}
               >
                 {col}

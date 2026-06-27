@@ -4,7 +4,7 @@ import { inputStyles } from './styles';
 import type { InputProps } from './types';
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ className, label, error, id, ...props }, ref) => {
+  ({ className, label, error, id, required, ...props }, ref) => {
     const styles = inputStyles();
     const inputId = id || props.name;
 
@@ -13,6 +13,14 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         {label && (
           <label htmlFor={inputId} className={styles.label()}>
             {label}
+            {required && (
+              <>
+                <span className={styles.required()} aria-hidden="true">
+                  *
+                </span>
+                <span className="sr-only"> (obrigatório)</span>
+              </>
+            )}
           </label>
         )}
         <input
@@ -20,7 +28,9 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           ref={ref}
           className={cn(styles.field(), error && styles.fieldError(), className)}
           aria-invalid={!!error}
+          aria-required={required || undefined}
           aria-describedby={error ? `${inputId}-error` : undefined}
+          required={required}
           {...props}
         />
         {error && (

@@ -5,7 +5,10 @@ import { timeInputStyles } from './styles';
 import type { TimeInputProps } from './types';
 
 export const TimeInput = forwardRef<HTMLInputElement, TimeInputProps>(
-  ({ label, error, id, name, value = '', placeholder = '09:00', onChange, onBlur }, ref) => {
+  (
+    { label, error, id, name, value = '', placeholder = '09:00', onChange, onBlur, required },
+    ref,
+  ) => {
     const styles = timeInputStyles();
     const inputId = id || name;
 
@@ -30,6 +33,14 @@ export const TimeInput = forwardRef<HTMLInputElement, TimeInputProps>(
         {label && (
           <label htmlFor={inputId} className={styles.label()}>
             {label}
+            {required && (
+              <>
+                <span className={styles.required()} aria-hidden="true">
+                  *
+                </span>
+                <span className="sr-only"> (obrigatório)</span>
+              </>
+            )}
           </label>
         )}
         <input
@@ -46,7 +57,9 @@ export const TimeInput = forwardRef<HTMLInputElement, TimeInputProps>(
           onBlur={handleBlur}
           className={cn(styles.field(), error && styles.fieldError())}
           aria-invalid={!!error}
+          aria-required={required || undefined}
           aria-describedby={error ? `${inputId}-error` : undefined}
+          required={required}
         />
         {error && (
           <span id={`${inputId}-error`} className={styles.error()} role="alert">

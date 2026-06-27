@@ -6,5 +6,6 @@ export interface DatePickerProps {
   placeholderText?: string;
   label?: string;
   error?: string;
+  required?: boolean;
   onChange: (date: Date | null) => void;
 }

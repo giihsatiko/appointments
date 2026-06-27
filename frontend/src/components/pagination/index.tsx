@@ -17,6 +17,7 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
           size="sm"
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage === 1}
+          aria-label="Página anterior"
         >
           Anterior
         </Button>
@@ -25,6 +26,7 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
           size="sm"
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
+          aria-label="Próxima página"
         >
           Próxima
         </Button>

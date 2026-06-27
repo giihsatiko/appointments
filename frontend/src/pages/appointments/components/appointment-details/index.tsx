@@ -3,7 +3,7 @@ import { Button } from '@/components/button';
 import { EmptyState } from '@/components/empty-state';
 import { Modal } from '@/components/modal';
 import { formatDate, formatTime, formatDateTime } from '@/utils/formatters';
-import { AppointmentStatusEnum } from '@/types/appointment';
+import { AppointmentStatusEnum } from '@/types/appointments';
 import { Skeleton } from '@/components/skeleton';
 import { Badge } from '@/components/badge';
 import { formatStatus } from '../../utils/format-status';
@@ -24,9 +24,10 @@ export function AppointmentDetails({
 
   if (isLoading) {
     return (
-      <Modal isOpen={isOpen} onClose={onClose} title="Carregando Detalhes...">
-        <div className={styles.loadingSkeleton()}>
-          <Skeleton className="h-64 w-full rounded-xl" />
+      <Modal isOpen={isOpen} onClose={onClose} title="Detalhes do Agendamento">
+        <div className={styles.loadingSkeleton()} aria-busy="true" role="status">
+          <span className="sr-only">Carregando detalhes do agendamento…</span>
+          <Skeleton className="h-64 w-full rounded-xl" aria-hidden="true" />
         </div>
       </Modal>
     );
@@ -42,7 +43,6 @@ export function AppointmentDetails({
       >
         <EmptyState
           icon={Calendar}
-          title="Agendamento não encontrado"
           description="O agendamento que você tentou acessar não existe ou ocorreu um erro."
         />
       </Modal>

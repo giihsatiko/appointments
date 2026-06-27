@@ -16,7 +16,7 @@ export function EmptyState({
       <div className={styles.iconWrapper()}>
         <Icon className={styles.icon()} aria-hidden="true" />
       </div>
-      <h3 className={styles.title()}>{title}</h3>
+      {title && <h3 className={styles.title()}>{title}</h3>}
       {description && <p className={styles.description()}>{description}</p>}
       {action && <div>{action}</div>}
     </div>

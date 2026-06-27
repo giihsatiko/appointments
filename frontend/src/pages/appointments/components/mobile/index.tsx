@@ -1,12 +1,11 @@
-import { AppointmentStatusEnum } from '@/types/appointment';
-
+import { Calendar, Clock, MapPin } from 'lucide-react';
+import { AppointmentStatusEnum } from '@/types/appointments';
 import { AppointmentActions } from '@/pages/appointments/components/appointment-actions';
-
 import { appointmentsMobileStyles } from './styles';
-
 import type { AppointmentsMobileProps } from './types';
 import { Card } from '@/components/card';
 import { Badge } from '@/components/badge';
+import { formatDate, formatTime } from '@/utils/formatters';
 import { formatStatus } from '../../utils/format-status';
 
 export function AppointmentsMobile({
@@ -36,6 +35,30 @@ export function AppointmentsMobile({
               {formatStatus(appointment.status)}
             </Badge>
           </div>
+
+          <dl className={styles.meta()}>
+            <div className={styles.metaItem()}>
+              <dt className={styles.metaLabel()}>
+                <Calendar className={styles.metaIcon()} aria-hidden="true" />
+                Data
+              </dt>
+              <dd className={styles.metaValue()}>{formatDate(appointment.date)}</dd>
+            </div>
+            <div className={styles.metaItem()}>
+              <dt className={styles.metaLabel()}>
+                <Clock className={styles.metaIcon()} aria-hidden="true" />
+                Hora
+              </dt>
+              <dd className={styles.metaValue()}>{formatTime(appointment.date)}</dd>
+            </div>
+            <div className={styles.metaItem()}>
+              <dt className={styles.metaLabel()}>
+                <MapPin className={styles.metaIcon()} aria-hidden="true" />
+                Local
+              </dt>
+              <dd className={styles.metaValue()}>{appointment.location}</dd>
+            </div>
+          </dl>
 
           <AppointmentActions
             appointmentId={appointment.id}
